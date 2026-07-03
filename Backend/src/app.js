@@ -7,7 +7,9 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: function(origin, callback) {
+        return callback(null, true);
+    },
     credentials: true
 }))
 
