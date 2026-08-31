@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mock-interview-ai-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm run dev
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false # You will need to paste your Mongo URI in Render dashboard
+      - key: JWT_SECRET
+        sync: false # You will need to paste your JWT Secret in Render dashboard
