@@ -3,6 +3,12 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const tokenBlacklistModel = require("../models/blacklist.model")
 
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === "production" ? null : "dev_jwt_secret_key_12345");
+
+if (!JWT_SECRET) {
+    throw new Error("FATAL: JWT_SECRET environment variable is not set. In production, a secure JWT_SECRET is required.");
+}
+
 /**
  * @name registerUserController
  * @description register a new user, expects username, email and password in the request body
@@ -38,7 +44,7 @@ async function registerUserController(req, res) {
 
     const token = jwt.sign(
         { id: user._id, username: user.username },
-        process.env.JWT_SECRET || 'mysecretkey123',
+        JWT_SECRET,
         { expiresIn: "1d" }
     )
 
@@ -88,7 +94,7 @@ async function loginUserController(req, res) {
 
     const token = jwt.sign(
         { id: user._id, username: user.username },
-        process.env.JWT_SECRET || 'mysecretkey123',
+        JWT_SECRET,
         { expiresIn: "1d" }
     )
 
@@ -136,8 +142,6 @@ async function getMeController(req, res) {
 
     const user = await userModel.findById(req.user.id)
 
-
-
     res.status(200).json({
         message: "User details fetched successfully",
         user: {
@@ -148,8 +152,6 @@ async function getMeController(req, res) {
     })
 
 }
-
-
 
 module.exports = {
     registerUserController,

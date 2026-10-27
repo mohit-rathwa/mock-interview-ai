@@ -7,6 +7,7 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GOOGLE_GENAI_API_KEY
 })
 
+const DEFAULT_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash"
 
 const interviewReportSchema = z.object({
     matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate's profile matches the job describe"),
@@ -34,7 +35,6 @@ const interviewReportSchema = z.object({
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
 
-
     const prompt = `Generate an interview report for a candidate with the following details:
                         Resume: ${resume}
                         Self Description: ${selfDescription}
@@ -42,7 +42,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 `
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: DEFAULT_GEMINI_MODEL,
         contents: prompt,
         config: {
             responseMimeType: "application/json",
@@ -52,10 +52,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 
     return JSON.parse(response.text)
 
-
 }
-
-
 
 async function generatePdfFromHtml(htmlContent) {
     const browser = await puppeteer.launch()
@@ -96,14 +93,13 @@ async function generateResumePdf({ resume, selfDescription, jobDescription }) {
                     `
 
     const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: DEFAULT_GEMINI_MODEL,
         contents: prompt,
         config: {
             responseMimeType: "application/json",
             responseSchema: zodToJsonSchema(resumePdfSchema),
         }
     })
-
 
     const jsonContent = JSON.parse(response.text)
 

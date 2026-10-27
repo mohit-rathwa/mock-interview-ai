@@ -3,11 +3,15 @@ services:
     name: mock-interview-ai-backend
     env: node
     buildCommand: npm install
-    startCommand: npm run dev
+    startCommand: node server.js
     envVars:
       - key: PORT
         value: 10000
       - key: MONGO_URI
-        sync: false # You will need to paste your Mongo URI in Render dashboard
+        sync: false # MongoDB Atlas connection string
       - key: JWT_SECRET
-        sync: false # You will need to paste your JWT Secret in Render dashboard
+        sync: false # JWT Secret for authentication
+      - key: GOOGLE_GENAI_API_KEY
+        sync: false # Google Gemini API Key
+      - key: ALLOWED_ORIGINS
+        sync: false # Comma-separated allowed frontend URLs

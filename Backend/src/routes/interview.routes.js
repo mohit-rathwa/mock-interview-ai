@@ -15,6 +15,13 @@ const interviewRouter = express.Router()
 interviewRouter.post("/", authMiddleware.authUser, upload.single("resume"), interviewController.generateInterViewReportController)
 
 /**
+ * @route POST /api/interview/demo
+ * @description generate a demo interview report without authentication using a sample resume.
+ * @access public
+ */
+interviewRouter.post("/demo", interviewController.generateDemoReportController)
+
+/**
  * @route GET /api/interview/report/:interviewId
  * @description get interview report by interviewId.
  * @access private

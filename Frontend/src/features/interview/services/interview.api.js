@@ -26,6 +26,18 @@ export const generateInterviewReport = async ({ jobDescription, selfDescription,
 
 }
 
+/**
+ * @description Service to generate a demo interview report without authentication using sample resume.
+ */
+export const generateDemoReport = async ({ jobDescription, selfDescription }) => {
+    const response = await api.post("/api/interview/demo", {
+        jobDescription,
+        selfDescription: selfDescription || "Experienced software developer seeking new challenges."
+    })
+
+    return response.data
+}
+
 
 /**
  * @description Service to get interview report by interviewId.
